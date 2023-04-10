@@ -10,11 +10,11 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    
+
     const firstName = req.body.firstname
     const lastName = req.body.lastname
     const email = req.body.email
-    
+
     const data = {
         members: [
             {
@@ -27,30 +27,30 @@ app.post('/', (req, res) => {
             }
         ]
     }
-    
+
     const jsonData = JSON.stringify(data)
-    
+
     const url = 'https://us21.api.mailchimp.com/3.0/lists/a2fb1d1bda'
     const options = {
         method: 'POST',
         auth: 'abhirup:0b4cc575d396b7ec41ac68a250a1c1a4-us21'
     }
-    
+
     const request = https.request(url, options, (response) => {
-        
-        response.statusCode === 200 ?
-        res.sendFile(__dirname + '/success.html') :
-            res.sendFile(__dirname + '/failure.html') 
-            
-            
-            // response.on('data', (data) => {
-                //     console.log(JSON.parse(data))
-                // })
-            })
-            
-            request.write(jsonData)
-            request.end()
-            
+
+        response.statusCode === 200
+            ? res.sendFile(__dirname + '/success.html')
+            : res.sendFile(__dirname + '/failure.html')
+
+
+        // response.on('data', (data) => {
+        //     console.log(JSON.parse(data))
+        // })
+    })
+
+    request.write(jsonData)
+    request.end()
+
 })
 
 app.post('/failure', (req, res) => {
