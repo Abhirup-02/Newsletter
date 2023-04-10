@@ -1,5 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
+const https = require('https')
+
+
+dotenv.config()
+
 
 const app = express()
 app.use(express.static('public'))
@@ -11,9 +17,7 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 
-    const firstName = req.body.firstname
-    const lastName = req.body.lastname
-    const email = req.body.email
+    const { firstName, lastName, email } = req.body
 
     const data = {
         members: [
@@ -30,10 +34,10 @@ app.post('/', (req, res) => {
 
     const jsonData = JSON.stringify(data)
 
-    const url = 'https://us21.api.mailchimp.com/3.0/lists/a2fb1d1bda'
+    const url = `https://us21.api.mailchimp.com/3.0/lists/${process.env.AUDIENCE_LIST_ID}`
     const options = {
         method: 'POST',
-        auth: 'abhirup:0b4cc575d396b7ec41ac68a250a1c1a4-us21'
+        auth: `newsletter:${process.env.MAILCHIMP_API_KEY}`
     }
 
     const request = https.request(url, options, (response) => {
